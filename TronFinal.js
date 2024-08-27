@@ -19,7 +19,7 @@ const contract = tronWeb.contract(contractAbi, contractAddress);
 const measurementPeriod = 60;
 
 // Number of transactions to send
-const numberOfTransactions = 7;
+const numberOfTransactions = 1;
 
 // Log results to a file
 const logFile = 'Tron_logs.txt';
@@ -101,7 +101,7 @@ async function measureThroughput() {
 async function main() {
     const latencies = [];
     const interval = measurementPeriod * 1000 / numberOfTransactions;
-    let value = 44;
+    let value = 45;
 
     let totalLatency = 0;
 
@@ -120,7 +120,8 @@ async function main() {
     };
 
     // Run the transactions and TPS measurement concurrently
-    await Promise.all([sendAndMeasure(), measureThroughput()]);
+    // await Promise.all([sendAndMeasure(), measureThroughput()]);
+    await sendAndMeasure();
 }
 
 main().catch(console.error);

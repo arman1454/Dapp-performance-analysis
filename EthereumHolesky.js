@@ -1,11 +1,10 @@
 const { ethers } = require('ethers');
 require('dotenv').config();
-// const provider = new ethers.providers.JsonRpcProvider('https://eth-sepolia.g.alchemy.com/v2/j8pR71uR77igUWtSTwIBPBe2WBaQRxuV');
 // const provider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/b88ece4a38fe403d9f873ab378243eae');
-const provider = new ethers.providers.JsonRpcProvider(process.env.SEPOLIA_CONNECT);
+const provider = new ethers.providers.JsonRpcProvider(process.env.HOLESKY_CONNECT);
 const contractAbi = require('./EthereumABI.json');
-const privateKey = process.env.PRIVATE_KEY; // Replace with your test private key
-const contractAddress = process.env.SEPOLIA_DEPLOYED; // Replace with your contract address
+const privateKey = process.env.PRIVATE_KEY;
+const contractAddress = process.env.HOLESKY_DEPLOYED; 
 const wallet = new ethers.Wallet(privateKey, provider);
 const contract = new ethers.Contract(contractAddress, contractAbi, wallet);
 
@@ -20,8 +19,8 @@ const numberOfTransactions = 10;
 
 // Log results to files
 const fs = require('fs');
-const logFile = 'Ethereum_logs_individual.txt';
-const tpsAndLatencyLog = 'Eth_TPS&AvgLatency_log.txt';
+const logFile = 'Ethereum_logs_individual2.txt';
+const tpsAndLatencyLog = 'Eth_TPS&AvgLatency_log2.txt';
 
 async function sendTransactions() {
     async function executeTransaction(val, gasPriceMultiplier) {

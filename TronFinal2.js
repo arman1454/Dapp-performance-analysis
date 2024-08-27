@@ -2,50 +2,32 @@ const TronWeb = require('tronweb');
 const fs = require('fs');
 const contractAbi = require('./TronABI.json');
 
-// Set up TronWeb instance
 const tronWeb = new TronWeb({
     fullHost: 'https://api.shasta.trongrid.io',
     privateKey: '21BB2CD7F87A4C6ADE94215D9452A051F76B9DF2276865061FB343F8524AAEB4'
 });
 
-// Address of your smart contract on the Shasta test network
 const contractAddress = 'TWLNxWm6CKHTPgtpzjaJrhpcSbxdg7uWBW';
-
-// Create a contract instance
 const contract = tronWeb.contract(contractAbi, contractAddress);
 
-// Measurement period in seconds
 const measurementPeriod = 60;
+const numberOfTransactions = 5;
+const logFile = 'Tron_logs.txt';
 
-// Number of transactions to send
-const numberOfTransactions = 10;
-
-// Log results to a file
-const logFile = 'tron_performance_logs.txt';
-
-async function sendTransaction(val, isComplex) {
+async function sendTransaction(val, energyLimit) {
     try {
-        // Start time before sending the transaction
         const startTime = Date.now();
 
-        // Send transaction
-        let tx;
-        if (isComplex) {
-            tx = await contract.methods.setComplexVal(val).send(); // Complex function
-        } else {
-            tx = await contract.methods.setVal(val).send(); // Simple function
-        }
-        console.log(`Transaction sent (${isComplex ? 'Complex' : 'Simple'}):`, tx);
+        const tx = await contract.methods.setval(val).send({
+            feeLimit: energyLimit * 10 ** 6,
+        });
+        console.log(`Transaction sent with Energy limit ${energyLimit}:`, tx);
 
-        // End time after the transaction is sent
         const endTime = Date.now();
-
-        // Calculate latency in seconds
         const latency = (endTime - startTime) / 1000;
-        console.log(`Transaction confirmed (${isComplex ? 'Complex' : 'Simple'}): ${tx}, Latency: ${latency}s`);
+        console.log(`Transaction confirmed: ${tx}, Latency: ${latency}s`);
 
-        // Log the latency result to the file
-        fs.appendFileSync(logFile, `Transaction confirmed (${isComplex ? 'Complex' : 'Simple'}): ${tx}, Latency: ${latency}s\n`);
+        fs.appendFileSync(logFile, `Transaction confirmed with Energy limit ${energyLimit}: ${tx}, Latency: ${latency}s\n`);
 
         return latency;
     } catch (error) {
@@ -57,32 +39,25 @@ async function sendTransaction(val, isComplex) {
 function measureLatency(totalLatency, numOfTransactions) {
     const averageLatency = totalLatency / numOfTransactions;
     console.log(`Average Latency: ${averageLatency}s`);
-    // Log average latency
     fs.appendFileSync(logFile, `Average Latency: ${averageLatency}s\n`);
 }
 
-async function measureThroughput(isComplex) {
+async function measureThroughput(energyLimit) {
     try {
-        // Get the current block number
         const startBlock = await tronWeb.trx.getCurrentBlock();
         const startBlockNum = startBlock.block_header.raw_data.number;
 
-        // Wait for the measurement period
         await new Promise(resolve => setTimeout(resolve, measurementPeriod * 1000));
 
-        // Get the block number after the measurement period
         const endBlock = await tronWeb.trx.getCurrentBlock();
         const endBlockNum = endBlock.block_header.raw_data.number;
 
         let transactionCount = 0;
 
-        // Loop through blocks and count relevant transactions
         for (let i = startBlockNum; i <= endBlockNum; i++) {
             const block = await tronWeb.trx.getBlock(i);
 
-            // Check if the block has transactions
             if (block.transactions && block.transactions.length > 0) {
-                // Count transactions related to your dApp (contract)
                 block.transactions.forEach(tx => {
                     if (tx.raw_data.contract[0].parameter.value.contract_address === tronWeb.address.toHex(contractAddress)) {
                         transactionCount++;
@@ -91,59 +66,40 @@ async function measureThroughput(isComplex) {
             }
         }
 
-        // Calculate TPS
         const tps = transactionCount / measurementPeriod;
-        console.log(`Throughput (TPS) (${isComplex ? 'Complex' : 'Simple'}): ${tps}`);
-
-        // Log TPS to file
-        fs.appendFileSync(logFile, `Throughput (TPS) (${isComplex ? 'Complex' : 'Simple'}): ${tps}\n`);
+        console.log(`Throughput (TPS) with Energy limit ${energyLimit}: ${tps}`);
+        fs.appendFileSync(logFile, `Throughput (TPS) with Energy limit ${energyLimit}: ${tps}\n`);
     } catch (error) {
         console.error("Error measuring throughput:", error);
     }
 }
 
 async function main() {
-    const latenciesSimple = [];
-    const latenciesComplex = [];
     const interval = measurementPeriod * 1000 / numberOfTransactions;
-    let value = 11;
+    let value = 45;
 
-    let totalLatencySimple = 0;
-    let totalLatencyComplex = 0;
+    const energyLimits = [4000, 1000];
 
-    // Simple transactions first
-    const sendAndMeasureSimple = async () => {
+    for (const energyLimit of energyLimits) {
+        fs.appendFileSync(logFile, `Testing with Energy limit: ${energyLimit}\n`);
+        let totalLatency = 0;
+
         for (let i = 0; i < numberOfTransactions; i++) {
-            const latency = await sendTransaction(value, false);
+            const latency = await sendTransaction(value, energyLimit);
             if (latency !== null) {
-                totalLatencySimple += latency;
+                totalLatency += latency;
             }
             await new Promise(resolve => setTimeout(resolve, interval));
             value++;
         }
-        if (totalLatencySimple > 0) {
-            measureLatency(totalLatencySimple, numberOfTransactions);
-        }
-    };
 
-    // Complex transactions
-    const sendAndMeasureComplex = async () => {
-        for (let i = 0; i < numberOfTransactions; i++) {
-            const latency = await sendTransaction(value, true);
-            if (latency !== null) {
-                totalLatencyComplex += latency;
-            }
-            await new Promise(resolve => setTimeout(resolve, interval));
-            value++;
+        if (totalLatency > 0) {
+            measureLatency(totalLatency, numberOfTransactions);
         }
-        if (totalLatencyComplex > 0) {
-            measureLatency(totalLatencyComplex, numberOfTransactions);
-        }
-    };
 
-    // Run the transactions and TPS measurement concurrently for both simple and complex scenarios
-    await Promise.all([sendAndMeasureSimple(), measureThroughput(false)]);
-    await Promise.all([sendAndMeasureComplex(), measureThroughput(true)]);
+        // Measure TPS after each set of transactions based on the energy limit
+        await measureThroughput(energyLimit);
+    }
 }
 
 main().catch(console.error);
