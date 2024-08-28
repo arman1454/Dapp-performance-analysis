@@ -1,2 +1,0 @@
-Transaction confirmed: 7cdefbae2df1e13a1cb8da0ec25ef99d1d49168eaf439ca20a343fc38d28e9c2, Latency: 2.037s
-Average Latency: 2.037s

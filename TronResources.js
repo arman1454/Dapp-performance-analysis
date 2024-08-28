@@ -1,18 +1,25 @@
 const TronWeb = require('tronweb');
-
+require('dotenv').config();
 const tronWeb = new TronWeb({
     fullHost: 'https://api.shasta.trongrid.io',
-    privateKey: '21BB2CD7F87A4C6ADE94215D9452A051F76B9DF2276865061FB343F8524AAEB4'
+    privateKey: process.env.Tron_WalletA_PrivateKey
 });
 
+const wallet = process.env.Tron_WalletA_Address;
 async function checkResources() {
-    const account = await tronWeb.trx.getAccount('TRoYuUqeFKMJqrVrkVqy1tLn7HfxKUevEy');
-    const accountResources = await tronWeb.trx.getAccountResources('TRoYuUqeFKMJqrVrkVqy1tLn7HfxKUevEy');
+    try{
+    const accountResources = await tronWeb.trx.getAccountResources(wallet);
 
-    console.log(`Remaining Energy: ${accountResources.EnergyLimit - accountResources.EnergyUsed}`);
-    console.log(`Remaining Bandwidth: ${accountResources.freeNetLimit - accountResources.freeNetUsed}`);
+    const remainingEnergy = accountResources.EnergyLimit - (accountResources.EnergyUsed||0);
+    const remainingBandwidth = accountResources.freeNetLimit - (accountResources.freeNetUsed || 0);
+
+    console.log(`Remaining Energy: ${remainingEnergy}`);
+    console.log(`Remaining Bandwidth: ${remainingBandwidth}`);
     console.log(`Maximum Energy: ${accountResources.EnergyLimit}`);
     console.log(`Maximum Bandwidth: ${accountResources.freeNetLimit}`);
+} catch (error) {
+    console.error("Error fetching resources:", error);
+}
 }
 
 checkResources().catch(console.error);

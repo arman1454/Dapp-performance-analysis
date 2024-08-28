@@ -1,12 +1,12 @@
 const TronWeb = require('tronweb');
-
+require('dotenv').config();
 // Create a new TronWeb instance (using Shasta test network)
 const tronWeb = new TronWeb({
     fullHost: 'https://api.shasta.trongrid.io'
 });
 
 // Replace with your generated wallet address
-const walletAddress = 'TRoYuUqeFKMJqrVrkVqy1tLn7HfxKUevEy';
+const walletAddress = process.env.Tron_WalletA_Address;
 
 // Function to check the balance
 async function checkBalance() {

@@ -1,48 +1,54 @@
 const TronWeb = require('tronweb');
 const fs = require('fs');
 const contractAbi = require('./TronABI.json');
+require('dotenv').config();
 
-const tronWeb = new TronWeb({
+// Initialize TronWeb instances for both wallets
+const tronWebA = new TronWeb({
     fullHost: 'https://api.shasta.trongrid.io',
-    privateKey: '21BB2CD7F87A4C6ADE94215D9452A051F76B9DF2276865061FB343F8524AAEB4'
+    privateKey: process.env.Tron_WalletA_PrivateKey
 });
 
+const tronWebB = new TronWeb({
+    fullHost: 'https://api.shasta.trongrid.io',
+    privateKey: process.env.Tron_WalletB_PrivateKey
+});
 const contractAddress = 'TWLNxWm6CKHTPgtpzjaJrhpcSbxdg7uWBW';
-const contract = tronWeb.contract(contractAbi, contractAddress);
+const contractInstanceA = tronWebA.contract(contractAbi, contractAddress);
+const contractInstanceB = tronWebB.contract(contractAbi, contractAddress);
 
 const measurementPeriod = 60;
-const numberOfTransactions = 5;
-const logFile = 'Tron_logs.txt';
+const numberOfTransactions = 1;
+const logFile = 'Tron_logs_individual.txt';
+const tpsAndLatencyLog = 'Tron_TPS&AvgLatency_log.txt';
 
-async function sendTransaction(val, energyLimit) {
+async function sendTransaction(contract, val, walletName) {
     try {
         const startTime = Date.now();
 
-        const tx = await contract.methods.setval(val).send({
-            feeLimit: energyLimit * 10 ** 6,
-        });
-        console.log(`Transaction sent with Energy limit ${energyLimit}:`, tx);
+        const tx = await contract.methods.setval(val).send();
+        console.log(`Transaction sent from ${walletName}:`, tx);
 
         const endTime = Date.now();
         const latency = (endTime - startTime) / 1000;
-        console.log(`Transaction confirmed: ${tx}, Latency: ${latency}s`);
+        console.log(`Transaction confirmed from ${walletName}: ${tx}, Latency: ${latency}s`);
 
-        fs.appendFileSync(logFile, `Transaction confirmed with Energy limit ${energyLimit}: ${tx}, Latency: ${latency}s\n`);
+        fs.appendFileSync(logFile, `Transaction confirmed from ${walletName}: ${tx}, Latency: ${latency}s\n`);
 
         return latency;
     } catch (error) {
-        console.error("Error executing function:", error);
+        console.error(`Error executing transaction from ${walletName}:`, error);
         return null;
     }
 }
 
-function measureLatency(totalLatency, numOfTransactions) {
+function measureLatency(totalLatency, numOfTransactions, walletName) {
     const averageLatency = totalLatency / numOfTransactions;
-    console.log(`Average Latency: ${averageLatency}s`);
-    fs.appendFileSync(logFile, `Average Latency: ${averageLatency}s\n`);
+    console.log(`Average Latency for ${walletName}: ${averageLatency}s`);
+    fs.appendFileSync(tpsAndLatencyLog, `Average Latency for ${walletName}: ${averageLatency}s\n`);
 }
 
-async function measureThroughput(energyLimit) {
+async function measureThroughput(tronWeb, walletName) {
     try {
         const startBlock = await tronWeb.trx.getCurrentBlock();
         const startBlockNum = startBlock.block_header.raw_data.number;
@@ -67,38 +73,42 @@ async function measureThroughput(energyLimit) {
         }
 
         const tps = transactionCount / measurementPeriod;
-        console.log(`Throughput (TPS) with Energy limit ${energyLimit}: ${tps}`);
-        fs.appendFileSync(logFile, `Throughput (TPS) with Energy limit ${energyLimit}: ${tps}\n`);
+        console.log(`Throughput (TPS) for ${walletName}: ${tps}`);
+        fs.appendFileSync(tpsAndLatencyLog, `Throughput (TPS) for ${walletName}: ${tps}\n`);
     } catch (error) {
-        console.error("Error measuring throughput:", error);
+        console.error(`Error measuring throughput for ${walletName}:`, error);
     }
 }
 
 async function main() {
-    const interval = measurementPeriod * 1000 / numberOfTransactions;
-    let value = 45;
+    const wallets = [
+        { tronWeb: tronWebB, contract: contractInstanceB, name: 'Wallet B (TRX-Paying)' },
+        { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)' }
+        
+    ];
 
-    const energyLimits = [4000, 1000];
-
-    for (const energyLimit of energyLimits) {
-        fs.appendFileSync(logFile, `Testing with Energy limit: ${energyLimit}\n`);
+    for (const wallet of wallets) {
+        fs.appendFileSync(logFile, `\nTesting transactions from ${wallet.name}\n`);
         let totalLatency = 0;
 
-        for (let i = 0; i < numberOfTransactions; i++) {
-            const latency = await sendTransaction(value, energyLimit);
-            if (latency !== null) {
-                totalLatency += latency;
+        // Parallel execution for sending transactions and measuring TPS
+        const sendAndMeasure = async () => {
+            let value = 16;
+            for (let i = 0; i < numberOfTransactions; i++) {
+                const latency = await sendTransaction(wallet.contract, value, wallet.name);
+                if (latency !== null) {
+                    totalLatency += latency;
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000)); // 1-second interval between transactions
+                value++;
             }
-            await new Promise(resolve => setTimeout(resolve, interval));
-            value++;
-        }
+            if (totalLatency > 0) {
+                measureLatency(totalLatency, numberOfTransactions, wallet.name);
+            }
+        };
 
-        if (totalLatency > 0) {
-            measureLatency(totalLatency, numberOfTransactions);
-        }
-
-        // Measure TPS after each set of transactions based on the energy limit
-        await measureThroughput(energyLimit);
+        // Run the transactions and TPS measurement concurrently
+        await Promise.all([sendAndMeasure(), measureThroughput(wallet.tronWeb, wallet.name)]);
     }
 }
 

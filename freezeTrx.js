@@ -3,19 +3,19 @@ const TronWeb = require('tronweb');
 // Set up TronWeb instance
 const tronWeb = new TronWeb({
     fullHost: 'https://api.shasta.trongrid.io', // Using Shasta Testnet
-    privateKey: '21BB2CD7F87A4C6ADE94215D9452A051F76B9DF2276865061FB343F8524AAEB4'
+    privateKey: process.env.Tron_WalletA_PrivateKey
 });
 
 // Address (Base58 format)
-const ownerAddress = 'TRoYuUqeFKMJqrVrkVqy1tLn7HfxKUevEy';
+const ownerAddress = process.env.Tron_WalletA_Address;
 
 async function freezeTRXForEnergyV2() {
     try {
         // Amount of TRX to freeze (in SUN)
-        const amountToFreeze = tronWeb.toSun(100); // 100 TRX converted to SUN
+        const amountToFreeze = tronWeb.toSun(50); // 100 TRX converted to SUN
 
         // Resource type: ENERGY or BANDWIDTH
-        const resourceType = 'ENERGY';
+        const resourceType = 'BANDWIDTH';
 
         // Use the freezeBalanceV2 method
         const freezeTransaction = await tronWeb.transactionBuilder.freezeBalanceV2(
