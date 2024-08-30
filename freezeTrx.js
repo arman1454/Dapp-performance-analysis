@@ -1,5 +1,5 @@
 const TronWeb = require('tronweb');
-
+require('dotenv').config();
 // Set up TronWeb instance
 const tronWeb = new TronWeb({
     fullHost: 'https://api.shasta.trongrid.io', // Using Shasta Testnet
@@ -12,10 +12,10 @@ const ownerAddress = process.env.Tron_WalletA_Address;
 async function freezeTRXForEnergyV2() {
     try {
         // Amount of TRX to freeze (in SUN)
-        const amountToFreeze = tronWeb.toSun(50); // 100 TRX converted to SUN
+        const amountToFreeze = tronWeb.toSun(20); // 100 TRX converted to SUN
 
         // Resource type: ENERGY or BANDWIDTH
-        const resourceType = 'BANDWIDTH';
+        const resourceType = 'ENERGY';
 
         // Use the freezeBalanceV2 method
         const freezeTransaction = await tronWeb.transactionBuilder.freezeBalanceV2(

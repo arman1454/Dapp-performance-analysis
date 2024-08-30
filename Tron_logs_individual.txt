@@ -1,6 +1,34 @@
 
-Testing transactions from Wallet B (TRX-Paying)
-Transaction confirmed from Wallet B (TRX-Paying): 265451e5f50973bf9b60f71c73bb94816a7fcc29d928307d7a17e08298da5dbb, Latency: 1.747s
-
 Testing transactions from Wallet A (Energy-Paying)
-Transaction confirmed from Wallet A (Energy-Paying): a95554b2e36b61bd5c9416da6d46cb5126b83a6e3703f5f29c581aee0663c5a0, Latency: 0.869s
+Wallet A (Energy-Paying) Initial Balances - Energy: 12697, TRX: 1847.33858
+Transaction confirmed from Wallet A (Energy-Paying): 60c117325813d436e952584c234637b380157aafbbd39f18b47e7b66a37e6d8e, Latency: 1.228s
+Transaction 1: TRX Used: 0, Remaining Energy: 7233
+Transaction confirmed from Wallet A (Energy-Paying): df14ba186f07690993633aaef3a55dc02547720f75e9e56de55eb16c1167c53e, Latency: 0.989s
+Transaction 2: TRX Used: 0, Remaining Energy: 1771
+Transaction confirmed from Wallet A (Energy-Paying): a456cdffb62fffb5710bc52b33c0360246eb6ad899bf629b546acae472dde345, Latency: 0.733s
+Transaction 3: TRX Used: 0, Remaining Energy: 3
+Transaction confirmed from Wallet A (Energy-Paying): 741f89e1eea118c92f83ae6468356aec093dd451a0083f7649aee5f232629677, Latency: 0.734s
+Transaction 4: TRX Used: 0, Remaining Energy: 3
+Transaction confirmed from Wallet A (Energy-Paying): f4d252980ba2348cf2871a231e9b6e07b3ed7b714d1c2b1a4d5873c1f8117823, Latency: 0.86s
+Transaction 5: TRX Used: 0.31300000000010186, Remaining Energy: 2
+Rate of TRX Usage Increase from Transaction 1 to 2: 0
+Rate of TRX Usage Increase from Transaction 2 to 3: 0
+Rate of TRX Usage Increase from Transaction 3 to 4: 0
+Rate of TRX Usage Increase from Transaction 4 to 5: 0.31300000000010186
+
+Testing transactions from Wallet B (TRX-Paying)
+Wallet B (TRX-Paying) Initial Balances - Energy: NaN, TRX: 1983.30396
+Transaction confirmed from Wallet B (TRX-Paying): af29289cb04cc1039627cc09c1a0178e98cdc16dcd1a1be6c17b7a64123f3834, Latency: 0.85s
+Transaction 1: TRX Used: 0, Remaining Energy: NaN
+Transaction confirmed from Wallet B (TRX-Paying): 17f78fce379005ee896a13e02b9b59cc84ab122afbf57f4751e55dadb9bf41f6, Latency: 0.741s
+Transaction 2: TRX Used: 0, Remaining Energy: NaN
+Transaction confirmed from Wallet B (TRX-Paying): 82ffa9e79dd1debfe225cd300137cd44ee1c21c13c169b942f68b3f33b4e1fa5, Latency: 0.879s
+Transaction 3: TRX Used: 0, Remaining Energy: NaN
+Transaction confirmed from Wallet B (TRX-Paying): a8b81571e8f9a7eee51d5897f7c26e4922d0dc7f3e34680f10064e79c023efb9, Latency: 0.9s
+Transaction 4: TRX Used: 2.6087199999999484, Remaining Energy: NaN
+Transaction confirmed from Wallet B (TRX-Paying): d13ba3ca96419b197b8123d1e84b02b84425bda1279338c8e18bba85a10dcceb, Latency: 0.924s
+Transaction 5: TRX Used: 2.6087199999999484, Remaining Energy: NaN
+Rate of TRX Usage Increase from Transaction 1 to 2: 0
+Rate of TRX Usage Increase from Transaction 2 to 3: 0
+Rate of TRX Usage Increase from Transaction 3 to 4: 2.6087199999999484
+Rate of TRX Usage Increase from Transaction 4 to 5: 0

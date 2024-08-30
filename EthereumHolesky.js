@@ -83,7 +83,7 @@ async function sendTransactions() {
                 if (latency !== null) {
                     totalLatency += latency;
                 }
-                await new Promise(resolve => setTimeout(resolve, 2));
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 value++;
             }
             if (totalLatency > 0) {

@@ -67,7 +67,7 @@ async function sendTransactions() {
     const gasPriceMultipliers = [1, 2]; // 1x (default) and 2x gas prices
     const latencies = [];
     const interval = measurementPeriod * 1000 / numberOfTransactions;
-    let value = 1;
+    let value = 40;
 
     for (const multiplier of gasPriceMultipliers) {
         // Add header for the current gas price multiplier
@@ -83,7 +83,7 @@ async function sendTransactions() {
                 if (latency !== null) {
                     totalLatency += latency;
                 }
-                await new Promise(resolve => setTimeout(resolve, 2));
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 value++;
             }
             if (totalLatency > 0) {

@@ -1,0 +1,6 @@
+Transaction confirmed: e7d4aaa6c1560277f3f7aec37d1256c24499db8991995299c1c5dc3878b7c313, Latency: 1.37s
+Transaction confirmed: 454b26c268b19e56de2dedb9965e4bc0f96cfac798a5a566f049566735d30efa, Latency: 0.535s
+Transaction confirmed: 3fdeb26de3f8e4a5a87b7e9b769929e8c26ea3f373183ec2f45e373d004f5dc7, Latency: 0.532s
+Transaction confirmed: b643e749be9289548498b13051f2ca374e493fe32a7bd47708331fc0e79c05ad, Latency: 0.551s
+Transaction confirmed: 3f8b1bca3ead644a161203537c91c415f94e2101b2b542fa187dccd378c4cd4d, Latency: 0.53s
+Average Latency: 0.7036000000000001s
