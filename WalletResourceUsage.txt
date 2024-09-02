@@ -1,0 +1,7 @@
+Wallet B (TRX-Paying) Initial Balances - Energy: NaN, TRX: 1825.73704
+Transaction 1: TRX Used: 2.60872, Energy Used: 5466, Balance: 1823.12832
+Wallet A (Energy-Paying) Initial Balances - Energy: 9595, TRX: 1826.77218
+Transaction 1: TRX Used: 0, Energy Used: 5466, Balance: 1826.77218
+
+
+

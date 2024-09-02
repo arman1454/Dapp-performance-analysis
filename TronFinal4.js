@@ -18,9 +18,60 @@ const contractInstanceA = tronWebA.contract(contractAbi, contractAddress);
 const contractInstanceB = tronWebB.contract(contractAbi, contractAddress);
 
 const measurementPeriod = 60;
-const numberOfTransactions = 3;
+const numberOfTransactions = 1;
 const logFile = 'Tron_logs_individual.txt';
 const tpsAndLatencyLog = 'Tron_TPS&AvgLatency_log.txt';
+const WalletResourceUsage = 'WalletResourceUsage.txt';
+
+
+
+
+async function getEnergyAndTRXBalance(tronWeb) {
+    try {
+        const address = tronWeb.defaultAddress.base58;
+
+        // Fetch account resources to get energy
+        const accountResources = await tronWeb.trx.getAccountResources(address);
+        const energy = accountResources.EnergyLimit - (accountResources.EnergyUsed || 0);
+        const bandwidth = accountResources.freeNetLimit - (accountResources.freeNetUsed || 0);
+
+        // Fetch TRX balance
+        const trxBalance = await tronWeb.trx.getBalance(address);
+        const trxBalanceInTRX = trxBalance / 1e6; // Convert from sun to TRX
+
+        return { energy,bandwidth, trxBalance: trxBalanceInTRX };
+    } catch (error) {
+        console.error('Error fetching energy and TRX balance:', error);
+        return { energy: 0, trxBalance: 0 };
+    }
+}
+
+// Function to fetch transaction information using the transaction hash
+async function fetchTransactionInfo(tronWeb, transactionID) {
+    try {
+        const transaction = await tronWeb.trx.getTransactionInfo(transactionID);
+        const energyUsed = transaction.receipt.energy_usage_total || 0;
+        const trxUsed = (transaction.fee || 0) / 1e6; // Convert from sun to TRX
+        const bandwidthUsed = (transaction.net_fee||0)/1e3
+        return { energyUsed, bandwidthUsed, trxUsed };
+    } catch (error) {
+        console.error('Error fetching transaction info:', error);
+        return { energyUsed: 0, trxUsed: 0 };
+    }
+}
+
+async function WalletResourceConsumption(walletName,txIds,tronWeb) {
+    const initialBalances = await getEnergyAndTRXBalance(tronWeb);
+    let currentBalance = initialBalances.trxBalance;
+    console.log(`${walletName} Initial Balances - Energy: ${initialBalances.energy}, TRX: ${initialBalances.trxBalance}`);
+    fs.appendFileSync(WalletResourceUsage, `${walletName} Initial Balances - Energy: ${initialBalances.energy}, TRX: ${initialBalances.trxBalance}\n`);
+    for (let i = 0; i < txIds.length; i++) {
+        const transactionInfo = await fetchTransactionInfo(tronWeb, txIds[i]);
+        currentBalance = currentBalance - transactionInfo.trxUsed;
+        console.log(`Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${transactionInfo.energyUsed}, Balance: ${currentBalance}`);
+        fs.appendFileSync(WalletResourceUsage, `Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${transactionInfo.energyUsed}, Balance: ${currentBalance}\n`);
+    }
+}
 
 async function sendTransaction(contract, val, walletName) {
     try {
@@ -35,7 +86,7 @@ async function sendTransaction(contract, val, walletName) {
 
         fs.appendFileSync(logFile, `Transaction confirmed from ${walletName}: ${tx}, Latency: ${latency}s\n`);
 
-        return latency;
+        return {latency,tx};
     } catch (error) {
         console.error(`Error executing transaction from ${walletName}:`, error);
         return null;
@@ -80,11 +131,11 @@ async function measureThroughput(tronWeb, walletName) {
     }
 }
 
-// { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)' },
+// { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)',txIds:[] },
 async function main() {
     const wallets = [
-        { tronWeb: tronWebB, contract: contractInstanceB, name: 'Wallet B (TRX-Paying)' },
-        
+        { tronWeb: tronWebB, contract: contractInstanceB, name: 'Wallet B (TRX-Paying)',txIds:[] },
+        { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)', txIds: [] }
     ];
 
     for (const wallet of wallets) {
@@ -93,12 +144,13 @@ async function main() {
 
         // Parallel execution for sending transactions and measuring TPS
         const sendAndMeasure = async () => {
-            let value = 16;
+            let value = 44;
             for (let i = 0; i < numberOfTransactions; i++) {
-                const latency = await sendTransaction(wallet.contract, value, wallet.name);
+                const {latency,tx} = await sendTransaction(wallet.contract, value, wallet.name);
                 if (latency !== null) {
                     totalLatency += latency;
                 }
+                wallet.txIds.push(tx)
                 await new Promise(resolve => setTimeout(resolve, 1000)); // 1-second interval between transactions
                 value++;
             }
@@ -110,6 +162,13 @@ async function main() {
         // Run the transactions and TPS measurement concurrently
         await Promise.all([sendAndMeasure(), measureThroughput(wallet.tronWeb, wallet.name)]);
     }
+    await new Promise(resolve => setTimeout(resolve, 80000))
+    for (const wallet of wallets) {
+        await WalletResourceConsumption(wallet.name,wallet.txIds,wallet.tronWeb)
+        
+    }
+
+
 
 
 }
