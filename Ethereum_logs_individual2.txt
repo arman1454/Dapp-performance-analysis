@@ -1,0 +1,22 @@
+Default gas Price
+GasPrice: 885292814, Latency: 18.452s
+GasPrice: 885292814, Latency: 25.861s
+GasPrice: 885292814, Latency: 17.765s
+GasPrice: 885292813, Latency: 9.785s
+GasPrice: 867586957, Latency: 25.723s
+GasPrice: 858734030, Latency: 21.875s
+GasPrice: 858734030, Latency: 33.777s
+GasPrice: 858734029, Latency: 21.73s
+GasPrice: 858734029, Latency: 21.785s
+GasPrice: 858734029, Latency: 25.756s
+2x the default gas Price
+GasPrice: 1717468058, Latency: 17.77s
+GasPrice: 1717468058, Latency: 22.57s
+GasPrice: 1717468058, Latency: 21.923s
+GasPrice: 1717468058, Latency: 22.218s
+GasPrice: 1717468058, Latency: 21.536s
+GasPrice: 1717468058, Latency: 22.189s
+GasPrice: 1717468058, Latency: 25.77s
+GasPrice: 1717468058, Latency: 18.476s
+GasPrice: 1717468058, Latency: 21.655s
+GasPrice: 1717468058, Latency: 21.719s

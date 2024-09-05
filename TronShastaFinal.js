@@ -13,12 +13,12 @@ const tronWebB = new TronWeb({
     fullHost: 'https://api.shasta.trongrid.io',
     privateKey: process.env.Tron_WalletB_PrivateKey
 });
-const contractAddress = 'TWLNxWm6CKHTPgtpzjaJrhpcSbxdg7uWBW';
+const contractAddress = process.env.Shasta_Deployed;
 const contractInstanceA = tronWebA.contract(contractAbi, contractAddress);
 const contractInstanceB = tronWebB.contract(contractAbi, contractAddress);
 
 const measurementPeriod = 60;
-const numberOfTransactions = 1;
+const numberOfTransactions = 4;
 const logFile = 'Tron_logs_individual.txt';
 const tpsAndLatencyLog = 'Tron_TPS&AvgLatency_log.txt';
 const WalletResourceUsage = 'WalletResourceUsage.txt';
@@ -32,7 +32,7 @@ async function getEnergyAndTRXBalance(tronWeb) {
 
         // Fetch account resources to get energy
         const accountResources = await tronWeb.trx.getAccountResources(address);
-        const energy = accountResources.EnergyLimit - (accountResources.EnergyUsed || 0);
+        const energy = (accountResources.EnergyLimit||0) - (accountResources.EnergyUsed || 0);
         const bandwidth = accountResources.freeNetLimit - (accountResources.freeNetUsed || 0);
 
         // Fetch TRX balance
@@ -60,17 +60,40 @@ async function fetchTransactionInfo(tronWeb, transactionID) {
     }
 }
 
-async function WalletResourceConsumption(walletName,txIds,tronWeb) {
-    const initialBalances = await getEnergyAndTRXBalance(tronWeb);
-    let currentBalance = initialBalances.trxBalance;
-    console.log(`${walletName} Initial Balances - Energy: ${initialBalances.energy}, TRX: ${initialBalances.trxBalance}`);
-    fs.appendFileSync(WalletResourceUsage, `${walletName} Initial Balances - Energy: ${initialBalances.energy}, TRX: ${initialBalances.trxBalance}\n`);
+async function WalletResourceConsumption(walletName,txIds,tronWeb,initialEnergy,initialBandwidth,initialBalance) {
+    let currentEnergy = initialEnergy;
+    let currentBandwidth = initialBandwidth
+    let currentBalance = initialBalance;
+    console.log(`${walletName} Initial Balances - Energy: ${currentEnergy}, BandWidth:${currentBandwidth}, TRX: ${currentBalance}`);
+    fs.appendFileSync(WalletResourceUsage, `${walletName} Initial Balances - Energy: ${currentEnergy}, BandWidth:${currentBandwidth}, TRX: ${currentBalance}\n`);
+    const trxRates = []
     for (let i = 0; i < txIds.length; i++) {
         const transactionInfo = await fetchTransactionInfo(tronWeb, txIds[i]);
         currentBalance = currentBalance - transactionInfo.trxUsed;
-        console.log(`Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${transactionInfo.energyUsed}, Balance: ${currentBalance}`);
-        fs.appendFileSync(WalletResourceUsage, `Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${transactionInfo.energyUsed}, Balance: ${currentBalance}\n`);
+        if (currentEnergy - transactionInfo.energyUsed>0){
+            currentEnergy = currentEnergy - transactionInfo.energyUsed;
+            console.log(`Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${transactionInfo.energyUsed}, Balance: ${currentBalance}, Energy:${currentEnergy}`);
+            fs.appendFileSync(WalletResourceUsage, `Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${transactionInfo.energyUsed}, Balance: ${currentBalance},Energy:${currentEnergy}\n`);
+            const obj = {
+                trxUsed:transactionInfo.trxUsed,
+                energyUsed: transactionInfo.energyUsed
+            }
+            trxRates.push(obj)
+        }
+        else{
+            console.log(`Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${currentEnergy}, Balance: ${currentBalance}, Energy:0`);
+            fs.appendFileSync(WalletResourceUsage, `Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${currentEnergy}, Balance: ${currentBalance}, Energy:0\n`);
+            const obj = {
+                trxUsed: transactionInfo.trxUsed,
+                energyUsed: currentEnergy
+            }
+            trxRates.push(obj)
+        }   
+        
     }
+
+    console.log(trxRates);
+    
 }
 
 async function sendTransaction(contract, val, walletName) {
@@ -131,17 +154,21 @@ async function measureThroughput(tronWeb, walletName) {
     }
 }
 
-// { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)',txIds:[] },
+// { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)',txIds:[],energy:0,bandwidth:0,trxBalance:0 },
+// { tronWeb: tronWebB, contract: contractInstanceB, name: 'Wallet B (TRX-Paying)',txIds:[],energy:0,bandwidth:0,trxBalance:0 },
 async function main() {
     const wallets = [
-        { tronWeb: tronWebB, contract: contractInstanceB, name: 'Wallet B (TRX-Paying)',txIds:[] },
-        { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)', txIds: [] }
+        { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)', txIds: [], energy: 0, bandwidth: 0, trxBalance: 0 },
+        { tronWeb: tronWebB, contract: contractInstanceB, name: 'Wallet B (TRX-Paying)', txIds: [], energy: 0, bandwidth: 0, trxBalance: 0 },
     ];
 
     for (const wallet of wallets) {
         fs.appendFileSync(logFile, `\nTesting transactions from ${wallet.name}\n`);
         let totalLatency = 0;
-
+        const {energy,bandwidth,trxBalance} = await getEnergyAndTRXBalance(wallet.tronWeb);
+        wallet.energy = energy;
+        wallet.bandwidth = bandwidth;
+        wallet.trxBalance = trxBalance; 
         // Parallel execution for sending transactions and measuring TPS
         const sendAndMeasure = async () => {
             let value = 44;
@@ -162,9 +189,10 @@ async function main() {
         // Run the transactions and TPS measurement concurrently
         await Promise.all([sendAndMeasure(), measureThroughput(wallet.tronWeb, wallet.name)]);
     }
-    await new Promise(resolve => setTimeout(resolve, 80000))
+    
+    await new Promise(resolve => setTimeout(resolve, 4000))//just waiting for 4 seconds
     for (const wallet of wallets) {
-        await WalletResourceConsumption(wallet.name,wallet.txIds,wallet.tronWeb)
+        await WalletResourceConsumption(wallet.name,wallet.txIds,wallet.tronWeb,wallet.energy,wallet.bandwidth,wallet.trxBalance)
         
     }
 

@@ -24,4 +24,4 @@ async function fetchTransactionInfo(tronWeb, transactionID) {
     }
 }
 
-fetchTransactionInfo(tronWebB,"79fb751c6b7a627ca4ce2c71f5e87dba99af1a936a8913bb6be8053f943db2d1").catch (console.error);
+fetchTransactionInfo(tronWebB,"377bdf70bfadadbf1890422a3a216fb1ba6542e3acc1330f8e35f286afa4833e").catch (console.error);
