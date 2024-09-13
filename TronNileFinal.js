@@ -18,7 +18,7 @@ const contractInstanceA = tronWebA.contract(contractAbi, contractAddress);
 const contractInstanceB = tronWebB.contract(contractAbi, contractAddress);
 
 const measurementPeriod = 60;
-const numberOfTransactions = 4;
+const numberOfTransactions = 5;
 const logFile = 'Tron_logs_individual2.txt';
 const tpsAndLatencyLog = 'Tron_TPS&AvgLatency_log2.txt';
 const WalletResourceUsage = 'WalletResourceUsage2.txt';

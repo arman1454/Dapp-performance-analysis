@@ -1,6 +1,0 @@
-Default gas Price
-Throughput (TPS): 0.03333333333333333 at 2024-09-04T08:27:42.771Z
-Average Latency: 22.250899999999998s
-2x the default gas Price
-Throughput (TPS): 0.05 at 2024-09-04T08:31:44.540Z
-Average Latency: 21.582600000000003s

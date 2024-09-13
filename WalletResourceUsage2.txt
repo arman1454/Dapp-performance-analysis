@@ -1,5 +1,0 @@
-Wallet B (TRX-Paying) Initial Balances - Energy: 0, BandWidth:600, TRX: 87.2694
-Transaction 1: TRX Used: 2.29572, Energy Used: 0, Balance: 84.97368, Energy:0
-Transaction 2: TRX Used: 2.60872, Energy Used: 0, Balance: 82.36496, Energy:0
-Transaction 3: TRX Used: 2.60872, Energy Used: 0, Balance: 79.75623999999999, Energy:0
-Transaction 4: TRX Used: 2.60872, Energy Used: 0, Balance: 77.14751999999999, Energy:0

@@ -1,7 +1,7 @@
 const { ethers } = require('ethers');
 require('dotenv').config();
 // const provider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/b88ece4a38fe403d9f873ab378243eae');
-const provider = new ethers.providers.JsonRpcProvider(process.env.SEPOLIA_CONNECT);
+const provider = new ethers.providers.JsonRpcProvider(process.env.Sepolia_Connect);
 const contractAbi = require('./EthereumABI.json');
 const privateKey = process.env.PRIVATE_KEY; 
 const contractAddress = process.env.SEPOLIA_DEPLOYED; 
@@ -15,7 +15,7 @@ const contract = new ethers.Contract(contractAddress, contractAbi, wallet);
 const measurementPeriod = 60;
 
 // Number of transactions to send
-const numberOfTransactions = 10;
+const numberOfTransactions = 5;
 
 // Log results to files
 const fs = require('fs');
@@ -46,8 +46,18 @@ async function sendTransactions() {
             const latency = (endTime - startTime) / 1000;
             console.log(`Transaction mined: ${receipt.transactionHash}, Latency: ${latency}s`);
 
-            // Log the result to the file
-            fs.appendFileSync(logFile, `GasPrice: ${gasPrice.toString()}, Latency: ${latency}s\n`);
+            // Get the gas used in the transaction
+            const gasUsed = receipt.gasUsed;
+
+            // Calculate the transaction cost in Ether (gasUsed * gasPrice)
+            const transactionCost = gasUsed.mul(gasPrice);
+
+            // Convert the cost from Wei to Ether
+            const etherUsed = ethers.utils.formatEther(transactionCost);
+            console.log(`Gas used: ${gasUsed.toString()}, Ether used: ${etherUsed} ETH`);
+
+            // Log the result to the file, including gas price, latency, and Ether used
+            fs.appendFileSync(logFile, `GasPrice: ${gasPrice.toString()}, Latency: ${latency}s, Ether Used: ${etherUsed} ETH\n`);
 
             return latency;
         } catch (error) {
@@ -55,6 +65,7 @@ async function sendTransactions() {
             return null;
         }
     }
+
 
     function measureLatency(totalLatency, numOfTransactions) {
         const averageLatency = totalLatency / numOfTransactions;

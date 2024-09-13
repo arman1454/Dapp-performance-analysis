@@ -1,12 +1,14 @@
 
 Testing transactions from Wallet A (Energy-Paying)
-Transaction confirmed from Wallet A (Energy-Paying): 41234c6704b80e2001ab2cc02df9ff70c5d27ee90a5b28130b1e52c544739f29, Latency: 0.755s
-Transaction confirmed from Wallet A (Energy-Paying): 5d2bf8384bac6f58809ff7a9d0730bb25ac6f47a64d4e3abc2d4185eaa682c40, Latency: 0.867s
-Transaction confirmed from Wallet A (Energy-Paying): 40d5116ff9087ac9475a3946e7fedb09a4f5505055b3b940f92ca3218f725fe6, Latency: 0.877s
-Transaction confirmed from Wallet A (Energy-Paying): 48f8a7c637cbec8ffea5eeb2c25482f238c3506e8ed246d55a93564ebb7136c4, Latency: 0.82s
+Transaction confirmed from Wallet A (Energy-Paying): d9b99a7c58a518604ef76ecdfd3c764c4a8a4a98a159d4a856159d50f3d9cadc, Latency: 0.924s
+Transaction confirmed from Wallet A (Energy-Paying): 149a68fafcd0da56a1eddaccb1d6d2d9fddaa251a4da376a73eda907b366eb11, Latency: 0.898s
+Transaction confirmed from Wallet A (Energy-Paying): b0425edbb9e6637a94709a258fefba5b352aba13626cf032a8c27738f02d3f1c, Latency: 0.865s
+Transaction confirmed from Wallet A (Energy-Paying): a2b4925502e39d6972374a61efb33781fb0b76d89145f56f80287328e0925acf, Latency: 0.912s
+Transaction confirmed from Wallet A (Energy-Paying): 577264970b0840ddbf4aea0cfaa86d6ac800b5044b0011798b4ba073a9b8101e, Latency: 0.862s
 
 Testing transactions from Wallet B (TRX-Paying)
-Transaction confirmed from Wallet B (TRX-Paying): ccd176fb724755c55bebbdee81479296d143a3e0e583e1596657b64b2d6736e6, Latency: 0.657s
-Transaction confirmed from Wallet B (TRX-Paying): 2631175f1b5479cd11c15fa009ae90d12801b1d38f61622acbd2b633bbd11e18, Latency: 0.849s
-Transaction confirmed from Wallet B (TRX-Paying): 1074dbeaf9a92fcfa8541f3cb36c867679584f6e93271ae35ef64fe570fb39c0, Latency: 0.876s
-Transaction confirmed from Wallet B (TRX-Paying): 79bffdb06a6f19c3a7eeb8e6a61f11ec043993c58830a40e138dd7b4e9b9bcd7, Latency: 0.686s
+Transaction confirmed from Wallet B (TRX-Paying): e71ea5b047ab1d7f9f6ee2eb7a7df5233f0548a71f5db1e1dab68fc35257bfb0, Latency: 0.934s
+Transaction confirmed from Wallet B (TRX-Paying): e74044cf5aaf70321355ab945006013505762d627ad9bb1dd600499b06a1d152, Latency: 0.764s
+Transaction confirmed from Wallet B (TRX-Paying): 1958afe4a9fb66df4f9a423fe7bd4f5647dd81023752f5389f75f65b8acb3257, Latency: 0.877s
+Transaction confirmed from Wallet B (TRX-Paying): e64a5c66aaa192ff5e9b3c84afbaf390e201da9c3fa3dba442308a8d80e94389, Latency: 0.717s
+Transaction confirmed from Wallet B (TRX-Paying): b0a2f22826c9be902f028a0a8049570a84c133a52a6480a764ecffbbeb6b532b, Latency: 0.732s

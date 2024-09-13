@@ -1,0 +1,12 @@
+Default gas Price
+GasPrice: 86396143, Latency: 25.65s, Ether Used: 0.000002299692534374 ETH
+GasPrice: 83804258, Latency: 29.5s, Ether Used: 0.000002230701739444 ETH
+GasPrice: 83804258, Latency: 26.409s, Ether Used: 0.000002230701739444 ETH
+GasPrice: 83804258, Latency: 17.703s, Ether Used: 0.000002230701739444 ETH
+GasPrice: 83804258, Latency: 37.796s, Ether Used: 0.000002230701739444 ETH
+2x the default gas Price
+GasPrice: 167608516, Latency: 38.572s, Ether Used: 0.000004461403478888 ETH
+GasPrice: 167608516, Latency: 29.882s, Ether Used: 0.000004461403478888 ETH
+GasPrice: 167608516, Latency: 21.549s, Ether Used: 0.000004461403478888 ETH
+GasPrice: 167608516, Latency: 21.874s, Ether Used: 0.000004461403478888 ETH
+GasPrice: 167608516, Latency: 34.423s, Ether Used: 0.000004461403478888 ETH
