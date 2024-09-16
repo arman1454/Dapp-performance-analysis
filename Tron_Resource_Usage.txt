@@ -1,0 +1,8 @@
+Transaction 1d47b0731d7573ff7ae86b401bdecfedb81368f38c102e689ae62342a5f6b7de - CPU Used: 4.70%, Memory Used: 0.43 MB
+Transaction 6bb4eb77c56b0021fdb8874f833537937a60cbf28bd3c79a9964cdba0a9efdef - CPU Used: 3.10%, Memory Used: 0.27 MB
+Transaction e9370ad89013f2f2f122c6a5814429b1d73ffeaf04759956c2b2455f11d706ab - CPU Used: 0.00%, Memory Used: 0.28 MB
+Transaction 998d25633a4d9c6ead71b050030d4b891f13fa2a306e4a648ea43a8ec35955e2 - CPU Used: 3.00%, Memory Used: -12.28 MB
+Transaction 8f9d8a9041da2b66b6e9b4e3011959ce270b8d0bdb46cdb8a171a01f1bd5571f - CPU Used: 1.33%, Memory Used: -0.68 MB
+Transaction 053537dbcd11ab55e804b4ba3a6a993ea255a9584e9e45e099bad138654ef8db - CPU Used: 7.80%, Memory Used: 0.05 MB
+Transaction be3f2fddd8c1f6b59d30fef440248f52ae1f52f8c290953c332113c66825ebe5 - CPU Used: 4.70%, Memory Used: -0.20 MB
+Transaction 783edf7ce205374c49fb54b11ae45de7326de4f1d98d25ebce02b915c5873760 - CPU Used: 3.10%, Memory Used: -0.11 MB
