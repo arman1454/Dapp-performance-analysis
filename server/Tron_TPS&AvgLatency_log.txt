@@ -1,0 +1,2 @@
+Average Latency for Wallet B (TRX-Paying): 1.1301999999999999s
+Throughput (TPS) for Wallet B (TRX-Paying): 0.08333333333333333
