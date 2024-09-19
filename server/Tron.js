@@ -138,14 +138,14 @@ async function measureThroughput(tronWeb, walletName, contractAddress) {
         console.error(`Error measuring throughput for ${walletName}:`, error);
     }
 }
-//{ tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)', txIds: [], energy: 0, bandwidth: 0, trxBalance: 0 },
+//
 // Main function to execute transactions
 async function executeTron(contractAddress, abi, functionName, value, numberOfTransactions) {
     const contractInstanceA = tronWebA.contract(abi, contractAddress);
     const contractInstanceB = tronWebB.contract(abi, contractAddress);
 
     const wallets = [
-        
+        { tronWeb: tronWebA, contract: contractInstanceA, name: 'Wallet A (Energy-Paying)', txIds: [], energy: 0, bandwidth: 0, trxBalance: 0 },
         { tronWeb: tronWebB, contract: contractInstanceB, name: 'Wallet B (TRX-Paying)', txIds: [], energy: 0, bandwidth: 0, trxBalance: 0 },
     ];
 

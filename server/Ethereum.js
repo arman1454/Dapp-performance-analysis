@@ -27,10 +27,13 @@ async function executeEthereum(contractAddress, contractAbi, functionName, value
                 const baseGasPrice = await provider.getGasPrice();
                 const gasPrice = baseGasPrice.mul(gasPriceMultiplier);
 
+                // Estimate the gas required for this transaction
+                const gasLimit = await contract.estimateGas[functionName](val, { gasPrice });
+
                 const startTime = Date.now();
-                // Dynamically call the function based on the functionName passed
-                const tx = await contract[functionName](val, { gasPrice });
-                console.log(`Transaction ${index} sent with gasPrice ${gasPrice.toString()}:`, tx.hash);
+                // Include the estimated gasLimit along with the gasPrice
+                const tx = await contract[functionName](val, { gasPrice, gasLimit });
+                console.log(`Transaction ${index} sent with gasPrice ${gasPrice.toString()} and gasLimit ${gasLimit.toString()}:`, tx.hash);
 
                 const receipt = await tx.wait();
                 const endTime = Date.now();
@@ -53,7 +56,7 @@ async function executeEthereum(contractAddress, contractAbi, functionName, value
                 console.log(`Transaction ${index} - CPU used: ${cpuUsage}%, Memory used: ${memoryUsage} MB`);
 
                 // Log to files
-                fs.appendFileSync(logFile, `Transaction ${index} - GasPrice: ${gasPrice.toString()}, Latency: ${latency}s, Ether Used: ${etherUsed} ETH\n`);
+                fs.appendFileSync(logFile, `Transaction ${index} - GasPrice: ${gasPrice.toString()}, GasLimit: ${gasLimit.toString()}, Latency: ${latency}s, Ether Used: ${etherUsed} ETH\n`);
                 fs.appendFileSync(resourceUsageLog, `Transaction ${index} - CPU Used: ${cpuUsage}%, Memory Used: ${memoryUsage} MB\n`);
 
                 return latency;
@@ -70,13 +73,14 @@ async function executeEthereum(contractAddress, contractAbi, functionName, value
             }
         }
 
+
         function measureLatency(totalLatency, numOfTransactions) {
             const averageLatency = totalLatency / numOfTransactions;
             console.log(`Average Latency: ${averageLatency}s`);
             fs.appendFileSync(tpsAndLatencyLog, `Average Latency: ${averageLatency}s\n`);
         }
 
-        const gasPriceMultipliers = [1];
+        const gasPriceMultipliers = [1,2];
 
         for (const multiplier of gasPriceMultipliers) {
             const header = multiplier === 1 ? 'Default gas Price\n' : `${multiplier}x the default gas Price\n`;

@@ -1,4 +1,5 @@
-Transaction 2 - CPU Used: 0.27%, Memory Used: -0.51 MB
-Transaction 3 - CPU Used: 1.12%, Memory Used: -0.36 MB
-Transaction 4 - CPU Used: 0.30%, Memory Used: -0.64 MB
-Transaction 5 - CPU Used: 0.14%, Memory Used: 0.41 MB
+Transaction 1 - CPU Used: 0.25%, Memory Used: 2.82 MB
+Transaction 2 - CPU Used: 0.48%, Memory Used: -1.50 MB
+Transaction 3 - CPU Used: -3.20%, Memory Used: 2.89 MB
+Transaction 4 - CPU Used: -5.43%, Memory Used: -0.60 MB
+Transaction 5 - CPU Used: 0.91%, Memory Used: 0.39 MB
