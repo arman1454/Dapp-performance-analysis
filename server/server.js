@@ -8,17 +8,17 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post('/execute', async (req, res) => {
-    const { contractAddresses, abi, functionName, value, numberOfTransactions } = req.body;
+    const { networks,contractAddresses, abi, functionName, value, numberOfTransactions } = req.body;
 
-    if (!contractAddresses || !abi || !functionName || !value || !numberOfTransactions) {
+    if (!networks || !contractAddresses || !abi || !functionName || !value || !numberOfTransactions) {
         return res.status(400).json({ error: 'Missing required parameters.' });
     }
 
     try {
         // Run Ethereum and Tron scripts in parallel
         await Promise.all([
-            executeEthereum(contractAddresses.ethereum, abi, functionName, value, numberOfTransactions),
-            executeTron(contractAddresses.tron, abi, functionName, value, numberOfTransactions)
+            executeEthereum(networks.Ethereum,contractAddresses.ethereum, abi, functionName, value, numberOfTransactions),
+            executeTron(networks.Tron,contractAddresses.tron, abi, functionName, value, numberOfTransactions)
         ]);
 
         res.status(200).json({ message: 'Transactions executed successfully.' });

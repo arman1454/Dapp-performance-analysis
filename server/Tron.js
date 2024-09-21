@@ -2,18 +2,6 @@ const TronWeb = require('tronweb');
 const pidusage = require('pidusage');
 const fs = require('fs');
 require('dotenv').config();
-
-// Initialize TronWeb instances for both wallets
-const tronWebA = new TronWeb({
-    fullHost: 'https://api.shasta.trongrid.io',
-    privateKey: process.env.Tron_WalletA_PrivateKey 
-});
-
-const tronWebB = new TronWeb({
-    fullHost: 'https://api.shasta.trongrid.io',
-    privateKey: process.env.Tron_WalletB_PrivateKey
-});
-
 const measurementPeriod = 60; // Measurement period in seconds
 const logFile = 'Tron_logs_individual.txt';
 const tpsAndLatencyLog = 'Tron_TPS&AvgLatency_log.txt';
@@ -140,7 +128,17 @@ async function measureThroughput(tronWeb, walletName, contractAddress) {
 }
 //
 // Main function to execute transactions
-async function executeTron(contractAddress, abi, functionName, value, numberOfTransactions) {
+async function executeTron(network, contractAddress, abi, functionName, value, numberOfTransactions) {
+    // Initialize TronWeb instances for both wallets
+    const tronWebA = new TronWeb({
+        fullHost: network,
+        privateKey: process.env.Tron_WalletA_PrivateKey
+    });
+
+    const tronWebB = new TronWeb({
+        fullHost: network,
+        privateKey: process.env.Tron_WalletB_PrivateKey
+    });
     const contractInstanceA = tronWebA.contract(abi, contractAddress);
     const contractInstanceB = tronWebB.contract(abi, contractAddress);
 

@@ -8,9 +8,9 @@ const tpsAndLatencyLog = 'Eth_TPS&AvgLatency_log.txt';
 const resourceUsageLog = 'Ethereum_Resource_Usage.txt';
 
 // This function will be called from `server.js`
-async function executeEthereum(contractAddress, contractAbi, functionName, value, numberOfTransactions) {
+async function executeEthereum(network,contractAddress, contractAbi, functionName, value, numberOfTransactions) {
     // Initialize the Ethereum provider and wallet
-    const provider = new ethers.providers.JsonRpcProvider(process.env.Sepolia_Connect);
+    const provider = new ethers.providers.JsonRpcProvider(network);
     const privateKey = process.env.PRIVATE_KEY;
     const wallet = new ethers.Wallet(privateKey, provider);
     const contract = new ethers.Contract(contractAddress, contractAbi, wallet);
