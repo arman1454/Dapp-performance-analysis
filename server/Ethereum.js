@@ -5,6 +5,7 @@ require('dotenv').config();
 // Log files for transactions and resource utilization
 const logFile = 'Ethereum_logs_individual.txt';
 const tpsAndLatencyLog = 'Eth_TPS&AvgLatency_log.txt';
+const ethWalletResource = "EthWalletResourceUsage.txt";
 const resourceUsageLog = 'Ethereum_Resource_Usage.txt';
 
 // This function will be called from `server.js`
@@ -56,7 +57,8 @@ async function executeEthereum(network,contractAddress, contractAbi, functionNam
                 console.log(`Transaction ${index} - CPU used: ${cpuUsage}%, Memory used: ${memoryUsage} MB`);
 
                 // Log to files
-                fs.appendFileSync(logFile, `Transaction ${index} - GasPrice: ${gasPrice.toString()}, GasLimit: ${gasLimit.toString()}, Latency: ${latency}s, Ether Used: ${etherUsed} ETH\n`);
+                fs.appendFileSync(logFile, `Transaction ${index} , Latency: ${latency}s\n`);
+                fs.appendFileSync(ethWalletResource, `Transaction ${index}: GasPrice: ${gasPrice.toString()}, GasLimit: ${gasLimit.toString()}, Ether Used: ${etherUsed} ETH\n`)
                 fs.appendFileSync(resourceUsageLog, `Transaction ${index} - CPU Used: ${cpuUsage}%, Memory Used: ${memoryUsage} MB\n`);
 
                 return latency;
@@ -86,7 +88,8 @@ async function executeEthereum(network,contractAddress, contractAbi, functionNam
             const header = multiplier === 1 ? 'Default gas Price\n' : `${multiplier}x the default gas Price\n`;
             fs.appendFileSync(logFile, `${header}`);
             fs.appendFileSync(tpsAndLatencyLog, `${header}`);
-
+            fs.appendFileSync(ethWalletResource,`${header}`);
+            fs.appendFileSync(resourceUsageLog,`${header}`);
             const sendAndMeasure = async () => {
                 let totalLatency = 0;
                 for (let i = 0; i < numberOfTransactions; i++) {

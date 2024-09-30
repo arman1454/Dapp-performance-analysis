@@ -1,0 +1,8 @@
+Default gas Price
+Transaction 1 - CPU Used: 1.05%, Memory Used: 2.56 MB
+Transaction 2 - CPU Used: 0.71%, Memory Used: -0.14 MB
+Transaction 3 - CPU Used: 0.76%, Memory Used: 0.61 MB
+2x the default gas Price
+Transaction 1 - CPU Used: -7.37%, Memory Used: -3.09 MB
+Transaction 2 - CPU Used: 0.75%, Memory Used: -0.30 MB
+Transaction 3 - CPU Used: 1.02%, Memory Used: 9.25 MB

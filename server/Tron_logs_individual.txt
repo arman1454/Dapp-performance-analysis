@@ -1,0 +1,8 @@
+Energy-Paying
+Transaction 1 from Wallet A (Energy-Paying): Latency: 0.558s
+Transaction 2 from Wallet A (Energy-Paying): Latency: 0.553s
+Transaction 3 from Wallet A (Energy-Paying): Latency: 0.559s
+TRX-Paying
+Transaction 1 from Wallet B (TRX-Paying): Latency: 1.872s
+Transaction 2 from Wallet B (TRX-Paying): Latency: 0.589s
+Transaction 3 from Wallet B (TRX-Paying): Latency: 0.541s

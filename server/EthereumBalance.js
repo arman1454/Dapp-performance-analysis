@@ -5,7 +5,7 @@
 
 const { ethers } = require('ethers');
 require('dotenv').config();
-const provider = new ethers.providers.JsonRpcProvider(process.env.Sepolia_Connect);
+const provider = new ethers.providers.JsonRpcProvider(process.env.Holesky_Connect);
 
 const WalletAddress = process.env.Ethereum_Wallet;
 async function checkBalance() {

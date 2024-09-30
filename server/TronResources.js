@@ -1,7 +1,7 @@
 const TronWeb = require('tronweb');
 require('dotenv').config();
 const tronWeb = new TronWeb({
-    fullHost: process.env.Shasta_Connect,
+    fullHost: process.env.Nile_Connect,
     privateKey: process.env.Tron_WalletA_PrivateKey
 });
 

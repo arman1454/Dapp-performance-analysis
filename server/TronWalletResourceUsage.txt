@@ -1,0 +1,8 @@
+Wallet A (Energy-Paying) Initial Balances - Energy: 18464, BandWidth: 600, TRX: 1699.747
+Transaction 1: TRX Used: 0, Energy Used: 5466, Balance: 1699.747, Energy: 12998
+Transaction 2: TRX Used: 0.313, Energy Used: 5466, Balance: 1699.434, Energy: 7532
+Transaction 3: TRX Used: 0.313, Energy Used: 5466, Balance: 1699.1209999999999, Energy: 2066
+Wallet B (TRX-Paying) Initial Balances - Energy: 0, BandWidth: 600, TRX: 2077.14752
+Transaction 1: TRX Used: 1.14786, Energy Used: 5466, Balance: 2075.99966, Energy: 0
+Transaction 2: TRX Used: 1.46086, Energy Used: 5466, Balance: 2074.5388, Energy: 0
+Transaction 3: TRX Used: 1.46086, Energy Used: 5466, Balance: 2073.0779399999997, Energy: 0

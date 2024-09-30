@@ -5,7 +5,7 @@ require('dotenv').config();
 const measurementPeriod = 60; // Measurement period in seconds
 const logFile = 'Tron_logs_individual.txt';
 const tpsAndLatencyLog = 'Tron_TPS&AvgLatency_log.txt';
-const WalletResourceUsage = 'WalletResourceUsage.txt';
+const tronWalletResource = 'TronWalletResourceUsage.txt';
 const resourceUsageLog = 'Tron_Resource_Usage.txt'; // New log for CPU/Memory usage
 
 async function getEnergyAndTRXBalance(tronWeb) {
@@ -44,7 +44,7 @@ async function WalletResourceConsumption(walletName, txIds, tronWeb, initialEner
     let currentBandwidth = initialBandwidth;
     let currentBalance = initialBalance;
 
-    fs.appendFileSync(WalletResourceUsage, `${walletName} Initial Balances - Energy: ${currentEnergy}, BandWidth: ${currentBandwidth}, TRX: ${currentBalance}\n`);
+    fs.appendFileSync(tronWalletResource, `${walletName} Initial Balances - Energy: ${currentEnergy}, BandWidth: ${currentBandwidth}, TRX: ${currentBalance}\n`);
     const trxRates = [];
 
     for (let i = 0; i < txIds.length; i++) {
@@ -52,7 +52,7 @@ async function WalletResourceConsumption(walletName, txIds, tronWeb, initialEner
         currentBalance -= transactionInfo.trxUsed;
         currentEnergy = Math.max(0, currentEnergy - transactionInfo.energyUsed);
 
-        fs.appendFileSync(WalletResourceUsage, `Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${transactionInfo.energyUsed}, Balance: ${currentBalance}, Energy: ${currentEnergy}\n`);
+        fs.appendFileSync(tronWalletResource, `Transaction ${i + 1}: TRX Used: ${transactionInfo.trxUsed}, Energy Used: ${transactionInfo.energyUsed}, Balance: ${currentBalance}, Energy: ${currentEnergy}\n`);
 
         trxRates.push({ trxUsed: transactionInfo.trxUsed, energyUsed: transactionInfo.energyUsed });
     }
@@ -61,7 +61,7 @@ async function WalletResourceConsumption(walletName, txIds, tronWeb, initialEner
 }
 
 // Send transaction dynamically and measure system resource usage
-async function sendTransaction(contract, functionName, val, walletName) {
+async function sendTransaction(contract, functionName, val, walletName, index) {
     try {
         const beforeStats = await pidusage(process.pid); // Capture CPU/Memory before transaction
 
@@ -71,15 +71,15 @@ async function sendTransaction(contract, functionName, val, walletName) {
 
         const endTime = Date.now();
         const latency = (endTime - startTime) / 1000;
-        console.log(`Transaction confirmed from ${walletName}: ${tx}, Latency: ${latency}s`);
+        console.log(`Transaction ${index} from ${walletName}, Latency: ${latency}s`);
 
         const afterStats = await pidusage(process.pid); // Capture CPU/Memory after transaction
         const cpuUsage = (afterStats.cpu - beforeStats.cpu).toFixed(2);
         const memoryUsage = ((afterStats.memory - beforeStats.memory) / 1024 / 1024).toFixed(2); // Convert memory to MB
 
         console.log(`CPU used: ${cpuUsage}%, Memory used: ${memoryUsage} MB for this transaction`);
-        fs.appendFileSync(resourceUsageLog, `Transaction ${tx} - CPU Used: ${cpuUsage}%, Memory Used: ${memoryUsage} MB\n`);
-        fs.appendFileSync(logFile, `Transaction confirmed from ${walletName}: ${tx}, Latency: ${latency}s\n`);
+        fs.appendFileSync(resourceUsageLog, `Transaction ${index} - CPU Used: ${cpuUsage}%, Memory Used: ${memoryUsage} MB\n`);
+        fs.appendFileSync(logFile, `Transaction ${index} from ${walletName}: Latency: ${latency}s\n`);
 
         return { latency, tx };
     } catch (error) {
@@ -153,11 +153,14 @@ async function executeTron(network, contractAddress, abi, functionName, value, n
         wallet.energy = energy;
         wallet.bandwidth = bandwidth;
         wallet.trxBalance = trxBalance;
-
+        const header = wallet.name ==="Wallet A (Energy-Paying)"? "Energy-Paying\n" : "TRX-Paying\n";
+        fs.appendFileSync(logFile, `${header}`);
+        fs.appendFileSync(tpsAndLatencyLog, `${header}`);
+        fs.appendFileSync(resourceUsageLog, `${header}`);
         const sendAndMeasure = async () => {
             let val = value;
             for (let i = 0; i < numberOfTransactions; i++) {
-                const { latency, tx } = await sendTransaction(wallet.contract, functionName, val, wallet.name);
+                const { latency, tx } = await sendTransaction(wallet.contract, functionName, val, wallet.name,i+1);
                 if (latency !== null) {
                     totalLatency += latency;
                 }

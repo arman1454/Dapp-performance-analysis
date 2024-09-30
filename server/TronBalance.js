@@ -2,7 +2,7 @@ const TronWeb = require('tronweb');
 require('dotenv').config();
 // Create a new TronWeb instance (using Shasta test network)
 const tronWeb = new TronWeb({
-    fullHost: process.env.Shasta_Connect
+    fullHost: process.env.Nile_Connect
 });
 
 // Replace with your generated wallet address
