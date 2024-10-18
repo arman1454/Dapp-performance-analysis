@@ -1,4 +1,0 @@
-Average Latency for Wallet A (Energy-Paying): 0.7867500000000001s
-Throughput (TPS) for Wallet A (Energy-Paying): 0.06666666666666667
-Average Latency for Wallet B (TRX-Paying): 0.97125s
-Throughput (TPS) for Wallet B (TRX-Paying): 0.06666666666666667
