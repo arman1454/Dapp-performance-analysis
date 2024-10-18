@@ -1,8 +1,0 @@
-Energy-Paying
-Transaction 1 - CPU Used: -6.30%, Memory Used: 0.13 MB
-Transaction 2 - CPU Used: 14.10%, Memory Used: -0.04 MB
-Transaction 3 - CPU Used: 4.60%, Memory Used: 0.52 MB
-TRX-Paying
-Transaction 1 - CPU Used: 2.35%, Memory Used: 1.45 MB
-Transaction 2 - CPU Used: 3.20%, Memory Used: 1.11 MB
-Transaction 3 - CPU Used: 0.00%, Memory Used: 1.01 MB

@@ -1,8 +1,5 @@
 Default gas Price
-Transaction 1 , Latency: 9.787s
-Transaction 2 , Latency: 9.072s
-Transaction 3 , Latency: 33.223s
-2x the default gas Price
-Transaction 1 , Latency: 17.201s
-Transaction 2 , Latency: 21.306s
-Transaction 3 , Latency: 21.084s
+Transaction 2, Response Time: 18.1943712s, Mempool Reaching Time: 3.63 Mempool Time: 14.563s
+Transaction 1, Response Time: 18.3464482s, Mempool Reaching Time: 3.07 Mempool Time: 15.275s
+Transaction 3, Response Time: 16.7572955s, Mempool Reaching Time: 3.61 Mempool Time: 13.145s
+Transaction 4, Response Time: 15.2866436s, Mempool Reaching Time: 3.524 Mempool Time: 11.761s

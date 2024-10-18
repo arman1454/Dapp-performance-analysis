@@ -1,0 +1,174 @@
+{ "networks":{
+    "Ethereum":"https://eth-holesky.g.alchemy.com/v2/j8pR71uR77igUWtSTwIBPBe2WBaQRxuV","Tron":"https://api.shasta.trongrid.io"
+},
+  "contractAddresses": {
+    "ethereum": "0xcAb90413BE11c645aEf0fDb9b781518Dad2ea3C4",
+    "tron": "TJQEXZPMNWJh9BFJ6T11AwTaELCASQRXjd"
+  },
+  "abi":[
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "n",
+                "type": "uint256"
+            }
+        ],
+        "name": "computeAndStoreFibonacci",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "n",
+                "type": "uint256"
+            }
+        ],
+        "name": "computeFibonacci",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "dataArray",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fibonacciResult",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "val",
+                "type": "uint256"
+            }
+        ],
+        "name": "setval",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_data",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "storeData",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "x",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+],  
+  "functionName": "setval",
+  "params": {
+    "value":5
+  },
+  "numberOfTransactions": 10
+}
+
+
+
+
+env
+
+
+SEPOLIA_DEPLOYED= 0x874528549CcEa13E691cbD7cb8849dfC42e4972D
+
+HOLESKY_DEPLOYED = 0xE810f6957cB89D047A1FF2a64c1ef35939d1E841
+
+
+Sepolia_Connect = https://eth-sepolia.g.alchemy.com/v2/j8pR71uR77igUWtSTwIBPBe2WBaQRxuV
+
+Holesky_Connect  = https://eth-holesky.g.alchemy.com/v2/j8pR71uR77igUWtSTwIBPBe2WBaQRxuV
+
+Ethereum_Wallet = 0x48B5B6435f773e5a4Dc02de1d7f5850ec7f3e7B7
+
+Private_Key= 0xec72f1d9f20d8056902d301da1ff8d08029adf05420bf97c485162e9c3244ccd
+
+
+
+Shasta_Deployed = TWLNxWm6CKHTPgtpzjaJrhpcSbxdg7uWBW
+
+Nile_Deployed = TMtAp8hYUGc9BAxWqQk5PB47Kjwi2Srdiq
+
+
+Shasta_Connect = https://api.shasta.trongrid.io
+
+Nile_Connect = https://nile.trongrid.io
+
+
+Tron_WalletA_PrivateKey = 21BB2CD7F87A4C6ADE94215D9452A051F76B9DF2276865061FB343F8524AAEB4
+Tron_WalletA_Address = TRoYuUqeFKMJqrVrkVqy1tLn7HfxKUevEy
+
+
+Tron_WalletB_PrivateKey = C66EE51996DEC8486370A065565364683EB5D617D8C5FCAE9D115065C412D00F
+Tron_WalletB_Address = TQTWciWkfKmWX77GqcVXeYUpF6LDJdaGmP
+
+
+Addresses = ["0x6A6DAe2bDe9cF9df3B871F18D46207ce9b410Ca2","0xc3207E1AAbF450e2adBab85a86fB466df1921D7F","0x4C21e2E7E2F1500B9E00fC7b58cE2284234186F5","0xA4041A3adAa4558B6211e8Db2f57F152afc11F0F","0x715144D462299bd0772a21188385b036581f1a05","0x2719767c884cf438Dbf54845a023D18B2af10365","0x78942c0DF098133964331646F20Cf2E15C6c3D9F"]
+
+PrivateKeys = ["0x8242a8f220231f3d79fbb2ea89a08ba577ba7d1fc8af6c6ecdef5bc3cff1f361","0xd64dc2d364f768da9706799846799f88f81282e2323abdf48788b23e3db02160","0x8934ed8022a69c665ecf376548beacb3cc55b6079ce4bdefdd9577fe515ee268","0xad6e53617795c56ab4e6c6ccbbf6530be354d5e9815e2ff7bd3f8815bfbd7ff5","0xd0254794577907f9872611a44d61e82fb3915ff3812b454ba7227b64b77fe5b0","0x9a23f32c53ad1fbbbe9d7cf2d7a9fd786ae9a71e9690ead8db292b303aba6a73","0x7484f93b85beedc7aa836d78117d0242893402798c8273e30a18ea8fff47c50c"]
+
+
+TronAddresses = ["TKVcnXVEFYqoxfxtusnNiU7ZC34KLgeFWG","TTrSVSxa7KFHwy6RN5RLQ1uRsNWWoHcMNJ","TH9tzsCdGXenuwYgQokyLjGDBN5ncEFERR","TSvuRhhtB2dpsi22aS3HykTY3EPxpvkAb7","TQTWciWkfKmWX77GqcVXeYUpF6LDJdaGmP"]
+TronPrivateKeys = ["BD27E29730BA0017B00EA1CA62D355212334D739A8871CAE62D57A706EF82DC4","AC8E89192ECD40386A69EC78B6AFB884397FE34A9E21FE3A983DD6DB0894A0E3","52839B459EFE8351B59AF469BA3381F71FA2A7A46C74954A172F3F30A1B37868","633C0D53ECEC2ED8A7F6E89A446EA242A2EE56AF62AEBBEF5DC1597C49087B80","C66EE51996DEC8486370A065565364683EB5D617D8C5FCAE9D115065C412D00F"]
+
+
+

@@ -1,0 +1,5 @@
+Default gas Price
+TPS: 0.2180258520011519 over 18.3464482s
+Average Response Time: 17.146189625s
+Average Ether Used: 2.3837419800000002e-8
+Blocks Produced: 4, Block Production Rate: 0.06666666666666667/sec at 2024-10-18T17:45:44.187Z

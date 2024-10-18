@@ -6,11 +6,14 @@
 const { ethers } = require('ethers');
 require('dotenv').config();
 const provider = new ethers.providers.JsonRpcProvider(process.env.Holesky_Connect);
-
-const WalletAddress = process.env.Ethereum_Wallet;
+const WalletAddresses = JSON.parse(process.env.EthereumAddresses);
 async function checkBalance() {
-    const balance = await provider.getBalance(WalletAddress);
-    console.log(`Balance: ${ethers.utils.formatEther(balance)} ETH`);
+    for(let i=0;i<WalletAddresses.length;i++){
+        const balance = await provider.getBalance(WalletAddresses[i]);
+        console.log(`Balance: ${ethers.utils.formatEther(balance)} ETH`);
+        // console.log(await provider.getTransactionCount(WalletAddresses[i], 'latest'));
+    }
+    
 }
 
 checkBalance();
